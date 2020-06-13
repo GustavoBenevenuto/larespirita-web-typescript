@@ -1,0 +1,11 @@
+div header {
+    margin: 20px;
+    border-radius: 25px;
+}
+
+
+.detail {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
