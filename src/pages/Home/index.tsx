@@ -22,8 +22,8 @@ const Home = () => {
             <div className="container">
                 <div className="row">
                     <div className="col-md-4 mb-5 detail">
-                        <h2>Casa Espírita</h2>
-                        <p>Uma casa espírita é uma entidade filantrópica que desenvolve suas atividades com base na Doutrina Espírita,codificada nas obras básicas de Allan Kardec.</p>
+                        <h2>Centro Espírita</h2>
+                        <p>Um centro espírita é uma entidade filantrópica que desenvolve suas atividades com base na Doutrina Espírita,codificada nas obras básicas de Allan Kardec.</p>
                         <Link className="btn btn-info btn-lg" to="/create-house">CADASTRAR &raquo;</Link>
                     </div>
 

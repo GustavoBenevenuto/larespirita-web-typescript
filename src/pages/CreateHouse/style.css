@@ -5,3 +5,12 @@
     margin-right: auto;
     margin-left: auto;
 }
+
+span {
+    background-color: #D6EDF0;
+    
+}
+
+span img {
+    max-width: 25px;
+}
