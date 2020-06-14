@@ -38,12 +38,11 @@ const CreateHouse = () => {
     const [cities, setCities] = useState<CityAPI[]>([]);
     const [selectedCity, setSelectedCity] = useState<string>('');
     const [activities, setActivities] = useState<ActivitiesAPI[]>([]);
-
     const [chkActivity, setChkActivity] = useState(false);
+
+    // Irão conter os dados de atividade, dia da semana e horas
     const [selectedActivy, setSelectedActivy] = useState<number[]>([]);
-
     const [selectedWeek, setSelectedWeek] = useState<string[]>([]);
-
     const [selectedHours, setSelectedHours] = useState<string[]>([]);
 
     // Pegar geolocalização
@@ -129,21 +128,22 @@ const CreateHouse = () => {
     }
 
     function handleSelectWeek(event: React.ChangeEvent<HTMLSelectElement>, indice: number) {
-        const hr = event.target.value;
-        const hrs = [...selectedWeek];
-        if (hrs[indice] !== hr) {
-            hrs[indice] = hr;
-        }
-        setSelectedWeek(hrs);
-    }
-
-    function handleSelectHours(event: React.ChangeEvent<HTMLSelectElement>, indice: number) {
         const wk = event.target.value;
         const weeks = [...selectedWeek];
         if (weeks[indice] !== wk) {
             weeks[indice] = wk;
         }
-        setSelectedHours(weeks);
+        setSelectedWeek(weeks);
+    }
+
+    function handleSelectHours(event: React.ChangeEvent<HTMLSelectElement>, indice: number) {
+        const hr = event.target.value;
+        const hrs = [...selectedHours];
+
+        if (hrs[indice] !== hr) {
+            hrs[indice] = hr;
+        }
+        setSelectedHours(hrs);
     }
 
     const validateForm = () => {
@@ -157,12 +157,39 @@ const CreateHouse = () => {
 
     }
 
-    const handleSubmit = (event: FormEvent) => {
+    async function handleSubmit(event: FormEvent) {
         event.preventDefault();
+        
+
         if (!validateForm()) return;
+        
+        // Serilização - Pegando todas as atividades com hora e dia
+        const activities_house = selectedActivy.map(item => {
+            return {
+                id_activity: item,
+                weekday: selectedWeek[item - 1],
+                hours: selectedHours[item - 1]
+            }
+        });
+
+        const data = {
+            name: iptName,
+            latitude,
+            longitude,
+            uf: selectedUf,
+            city: selectedCity,
+            neighborhood: iptNeighborhood,
+            street: iptStreet,
+            number: iptNumber,
+            telephone: iptTelephone,
+            email: iptEmail,
+            activities: activities_house
+        }
 
         try {
-            api.post('/')
+            await api.post('/house', data);
+            alert('Sucesso');
+
         } catch (error) {
             alert('Erro ao cadastrar ' + error);
         } finally {
@@ -286,17 +313,17 @@ const CreateHouse = () => {
                                                 <div id={"collapse-" + item.id} className={selectedActivy.includes(item.id) ? 'collapse-show' : 'collapse'} aria-labelledby="headingOne" data-parent="#accordion">
                                                     <div className="card-body">
                                                         <div className="form-row">
-                                                        <div className="form-group col-sm-6 col-12">
-                                                            <select name="week" className="form-control" onChange={(value) => { handleSelectWeek(value, index) }}>
-                                                                <option value="0">Selecione o dia da semana</option>
-                                                                <option value="Segunda-feira">Segunda-feira</option>
-                                                                <option value="Terça-feira">Terça-feira</option>
-                                                                <option value="Quarta-feira">Quarta-feira</option>
-                                                                <option value="Quinta-feira">Quinta-feira</option>
-                                                                <option value="Sexta-feira">Sexta-feira</option>
-                                                                <option value="Sábado">Sábado</option>
-                                                                <option value="Sábado">Domingo</option>
-                                                            </select>
+                                                            <div className="form-group col-sm-6 col-12">
+                                                                <select name="week" className="form-control" onChange={(value) => { handleSelectWeek(value, index) }}>
+                                                                    <option value="0">Selecione o dia da semana</option>
+                                                                    <option value="Segunda-feira">Segunda-feira</option>
+                                                                    <option value="Terça-feira">Terça-feira</option>
+                                                                    <option value="Quarta-feira">Quarta-feira</option>
+                                                                    <option value="Quinta-feira">Quinta-feira</option>
+                                                                    <option value="Sexta-feira">Sexta-feira</option>
+                                                                    <option value="Sábado">Sábado</option>
+                                                                    <option value="Sábado">Domingo</option>
+                                                                </select>
                                                             </div>
 
                                                             <div className="form-group col-sm-6 col-12">
