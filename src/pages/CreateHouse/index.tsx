@@ -161,7 +161,7 @@ const CreateHouse = () => {
         event.preventDefault();
         
 
-        if (!validateForm()) return;
+        if (!validateForm()) { alert('Preencha todos os dados'); return};
         
         // Serilização - Pegando todas as atividades com hora e dia
         const activities_house = selectedActivy.map(item => {
@@ -212,7 +212,7 @@ const CreateHouse = () => {
                                 <div className="form-group col-sm-12">
                                     <label>Nome</label>
                                     <input type="text" className="form-control" placeholder="Nome da centro" name="iptName"
-                                        required value={iptName}
+                                        value={iptName}
                                         onChange={(value) => { handleIptName(value) }} />
                                 </div>
 
@@ -233,7 +233,7 @@ const CreateHouse = () => {
                                 <div className=" form-group col-sm-6">
                                     <label>Estado (UF)</label>
                                     <select name="uf" className="form-control "
-                                        required value={selectedUf}
+                                         value={selectedUf}
                                         onChange={handleSelectedUf}>
                                         <option value="">Selecione UF</option>
                                         {
@@ -248,7 +248,7 @@ const CreateHouse = () => {
                                 <div className="form-group col-sm-6">
                                     <label>Cidade</label>
                                     <select name="city" className="form-control"
-                                        required value={selectedCity}
+                                         value={selectedCity}
                                         onChange={handleSelectedCity}
                                     >
                                         <option value="">Selecione sua cidade</option>
@@ -263,19 +263,19 @@ const CreateHouse = () => {
                                 <div className=" form-group col-sm-4">
                                     <label>Bairro</label>
                                     <input type="text" className="form-control" placeholder="Bairro"
-                                        name="iptNeighborhood" required value={iptNeighborhood}
+                                        name="iptNeighborhood"  value={iptNeighborhood}
                                         onChange={(value) => { handleIptNeighborhood(value) }} />
                                 </div>
                                 <div className=" form-group col-sm-5">
                                     <label>Rua</label>
                                     <input type="text" className="form-control" placeholder="Rua"
-                                        name="iptStreet" required value={iptStreet}
+                                        name="iptStreet"  value={iptStreet}
                                         onChange={(value) => { handleIptStreet(value) }} />
                                 </div>
                                 <div className=" form-group col-sm-3">
                                     <label>Número</label>
                                     <input type="number" className="form-control" placeholder="Número"
-                                        name="iptNumber" required value={iptNumber}
+                                        name="iptNumber"  value={iptNumber}
                                         onChange={(value) => { handleIptNumber(value) }} />
                                 </div>
 
