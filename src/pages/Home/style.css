@@ -9,3 +9,11 @@ div header {
     flex-direction: column;
     justify-content: center;
 }
+
+div h2 {
+    color: #093284;
+}
+
+div p {
+    color: #093284;
+}

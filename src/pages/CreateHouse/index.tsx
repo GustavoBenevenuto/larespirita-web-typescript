@@ -28,6 +28,7 @@ const CreateHouse = () => {
     const [iptName, setIptName] = useState('');
     const [latitude, setLatitude] = useState(0);
     const [longitude, setLongitude] = useState(0);
+    const [initialPosition, setInitialPosition] = useState<[number, number]>([0, 0]);
     const [iptEmail, setIptEmail] = useState('');
     const [iptTelephone, setIptTelephone] = useState('');
     const [iptNeighborhood, setIptNeighborhood] = useState('');
@@ -50,8 +51,7 @@ const CreateHouse = () => {
         navigator.geolocation.getCurrentPosition((pos) => {
             const { latitude, longitude } = pos.coords;
 
-            setLatitude(latitude);
-            setLongitude(longitude);
+            setInitialPosition([latitude, longitude]);
         });
     }, []);
 
@@ -116,6 +116,12 @@ const CreateHouse = () => {
         setSelectedCity(event.target.value);
     }
 
+    const handleClickMap = (event: LeafletMouseEvent) => {
+        const { lat, lng } = event.latlng;
+        setLatitude(lat);
+        setLongitude(lng);
+    }
+
     function handleSelectChk(id: number) {
         const ids = [...selectedActivy];
         const index = ids.indexOf(id);
@@ -159,10 +165,9 @@ const CreateHouse = () => {
 
     async function handleSubmit(event: FormEvent) {
         event.preventDefault();
-        
 
-        if (!validateForm()) { alert('Preencha todos os dados'); return};
-        
+        if (!validateForm()) { alert('Preencha todos os dados'); return };
+
         // Serilização - Pegando todas as atividades com hora e dia
         const activities_house = selectedActivy.map(item => {
             return {
@@ -200,7 +205,7 @@ const CreateHouse = () => {
     return (
         <div className="create-house">
             <Header />
-            <div className="container-form">
+            <div className="container-form texto">
 
                 <div className="card shadow p-3 mt-3 mb-5 bg-white rounded">
                     <div className="card-body">
@@ -233,7 +238,7 @@ const CreateHouse = () => {
                                 <div className=" form-group col-sm-6">
                                     <label>Estado (UF)</label>
                                     <select name="uf" className="form-control "
-                                         value={selectedUf}
+                                        value={selectedUf}
                                         onChange={handleSelectedUf}>
                                         <option value="">Selecione UF</option>
                                         {
@@ -248,7 +253,7 @@ const CreateHouse = () => {
                                 <div className="form-group col-sm-6">
                                     <label>Cidade</label>
                                     <select name="city" className="form-control"
-                                         value={selectedCity}
+                                        value={selectedCity}
                                         onChange={handleSelectedCity}
                                     >
                                         <option value="">Selecione sua cidade</option>
@@ -263,34 +268,37 @@ const CreateHouse = () => {
                                 <div className=" form-group col-sm-4">
                                     <label>Bairro</label>
                                     <input type="text" className="form-control" placeholder="Bairro"
-                                        name="iptNeighborhood"  value={iptNeighborhood}
+                                        name="iptNeighborhood" value={iptNeighborhood}
                                         onChange={(value) => { handleIptNeighborhood(value) }} />
                                 </div>
                                 <div className=" form-group col-sm-5">
                                     <label>Rua</label>
                                     <input type="text" className="form-control" placeholder="Rua"
-                                        name="iptStreet"  value={iptStreet}
+                                        name="iptStreet" value={iptStreet}
                                         onChange={(value) => { handleIptStreet(value) }} />
                                 </div>
                                 <div className=" form-group col-sm-3">
                                     <label>Número</label>
                                     <input type="number" className="form-control" placeholder="Número"
-                                        name="iptNumber"  value={iptNumber}
+                                        name="iptNumber" value={iptNumber}
                                         onChange={(value) => { handleIptNumber(value) }} />
                                 </div>
 
-                                {/* <div className="form-group col-sm-12">
-                                    <label>Selecione o endereço no mapa</label>
-                                    <Map center={[-19.8273332, -43.9341399]} zoom={13}>
+                                <div>
+                                    <h5 className="mb-0">Marque no mapa</h5>
+                                    <label>Marque no mapa o local exato</label>
+                                </div>
+                                <div className="form-group col-sm-12 leaflet-container">
+                                    <Map center={initialPosition} zoom={14} onclick={handleClickMap}>
                                         <TileLayer
                                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                                             attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
                                         />
-                                        <Marker position={[-19.8273332, -43.9341399]}>
-                                            <Popup>A pretty CSS3 popup.<br />Easily customizable.</Popup>
+                                        <Marker position={[latitude, longitude]} >
+                                            <Popup>Selecione onde está localizada o centro espírita!</Popup>
                                         </Marker>
                                     </Map>
-                                </div> */}
+                                </div>
 
                                 <h5 className="col-12 mt-3">Atividades Realizadas</h5>
                             </div>
